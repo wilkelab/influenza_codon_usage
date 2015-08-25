@@ -1,0 +1,69 @@
+```{r global_options, include=FALSE}
+library(magrittr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(cowplot)
+library(reshape)
+```
+##Plotting codons used in each strain
+the tidy data sets are HUGE, so I did them up by strain, now I'm merging them into one big table.  Is there a way to make this quicker and easier?  My computer's kinda garbage and its maxing out its memory doing this.
+
+```{r}
+H2N2PB1 <- read.csv(file='H2N2PB1.fa.tidy', head=TRUE, sep='\t')
+H1N1PB1 <- read.csv(file='H1N1PB1.fa.tidy', head=TRUE, sep='\t')
+PB1a <- merge(H2N2PB1, H1N1PB1, all=TRUE)
+rm(H2N2PB1, H1N1PB1)
+H3N2PB1 <- read.csv(file='H3N2PB1.fa.tidy', head=TRUE, sep='\t')
+PB1 <- merge(PB1a, H3N2PB1, all=TRUE)
+rm(H3N2PB1, PB1a)
+names(PB1)
+```
+
+sweet, ok, now I'm making a table that has: strain, codon, number of times codon is found within strain, circulation time, serotype, number of times amino acid is found within strain
+
+```{r}
+PB1rtAI <- PB1 %>% group_by(sero, strain, aa, codon) %>% summarize(numcod=length(X.IFN), coryear=mean(coryear))
+rm(PB1)
+PB1 <- PB1rtAI %>% group_by(sero, strain, aa) %>% mutate(numaa=sum(numcod))
+rm(PB1rtAI)
+names(PB1)
+```
+(This bit's probably not done very efficiently...)
+
+Now I can plot!
+
+__Number of each codon found in strain__
+```{r}
+ggplot(PB1, aes(x=coryear, y=(numcod), color=sero))+geom_point()+ background_grid(major = "xy", minor = "none")+facet_wrap(~codon)
+```
+
+
+__Proportion of each codon used for its amino acid in strain__
+```{r}
+ggplot(PB1, aes(x=coryear, y=(numcod/numaa), color=sero))+geom_point()+ background_grid(major = "xy", minor = "none")+facet_wrap(~codon)
+```
+
+__Pulling out linear regression__
+```{r}
+PB1 %>% group_by(sero, codon) %>% do(lm.result = lm((numcod) ~ coryear, data=.)) -> fitted.models
+intslope <- do(fitted.models, data.frame(sero=.$sero,cod=.$cod, 
+                             intercept=coef(.$lm.result)[1], 
+                             slope=coef(.$lm.result)[2]))
+rm(fitted.models)
+intslope
+```
+
+Nice!  slopes and intercetps GOT!
+Next up: p values
+
+```{r}
+PB1 %>% group_by(sero, codon) %>%
+  do(cor.res = cor.test(.$numcod, .$coryear)) -> cors
+corp <- do(cors, data.frame(sero=.$sero, codon=.$codon, cor=.$cor.res$estimate, p=.$cor.res$p.value))
+rm(cors)
+corp
+```
+
+I mostly just copy-pasted the stats stuff.  I think I understand them, but I'll have to mess around with them a bit more.
+Cool beans, now to figure out what to do with these numbers...
