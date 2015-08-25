@@ -23,9 +23,7 @@ noIFNmax - the maximum RSCU for the amino acid the given codon codes based off t
 noIFNmin - the minimum RSCU for the amino acid the given codon codes based off tRNA sequencing in the treatment with out IFN
 noIFNreads - the number of sequences mapped to a tRNA that recognizes the codon in the treatment without IFN
 CAI - the RSCU based off the top 200 most highly expressed genes across multiple cell types as determined by ATLAS-EMBL database
-CAImax - the maximum RSCU for the amino acid the given codon codes for based off the top 200 most highly expressed genes across multiple cell types as determined by ATLAS-EMBL database
-CAImin - the minimum RSCU for the amino acid the given codon codes for based off the top 200 most highly expressed genes across multiple cell types as determined by ATLAS-EMBL database
-GC - the GC content of the codon
+CAImax the maximum RSCU for the amino acid the given codon codes for based off the top 200 most highly expressed genes across multiple cell types as determined by ATLAS-EMBL database
 
 tidyitup is the python script used to convert the sequence files to the tables
 
