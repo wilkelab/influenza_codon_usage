@@ -15,12 +15,12 @@ codonvalues is a table containint a number of values that apply to each possible
 codon - the codon we're looking at
 aa - the amino acid the codon codes for
 withIFN - the RSCU based off tRNA sequencing in the treatment with IFN
-withIFNmax - the maximum RSCU for the amino acid the given codon codes based off tRNA sequencing in the treatment with IFN
-withIFNmin - the minimum RSCU for the amino acid the given codon codes based off tRNA sequencing in the treatment with IFN
+withIFNmax - the maximum RSCU for the amino acid the given codon codes for based off tRNA sequencing in the treatment with IFN
+withIFNmin - the minimum RSCU for the amino acid the given codon codes for based off tRNA sequencing in the treatment with IFN
 withIFNreads - the number of sequences mapped to a tRNA that recognizes the codon in the treatment with IFN
 noIFN - the RSCU based off tRNA sequencing in the treatment with IFN
-noIFNmax - the maximum RSCU for the amino acid the given codon codes based off tRNA sequencing in the treatment with out IFN
-noIFNmin - the minimum RSCU for the amino acid the given codon codes based off tRNA sequencing in the treatment with out IFN
+noIFNmax - the maximum RSCU for the amino acid the given codon codes for based off tRNA sequencing in the treatment with out IFN
+noIFNmin - the minimum RSCU for the amino acid the given codon codes for based off tRNA sequencing in the treatment with out IFN
 noIFNreads - the number of sequences mapped to a tRNA that recognizes the codon in the treatment without IFN
 CAI - the RSCU based off the top 200 most highly expressed genes across multiple cell types as determined by ATLAS-EMBL database
 CAImax - the maximum RSCU for the amino acid the given codon codes for based off the top 200 most highly expressed genes across multiple cell types as determined by ATLAS-EMBL database
@@ -29,4 +29,4 @@ GC - the GC content of the codon
 
 tidyitup is the python script used to convert the sequence files to the tables
 
-individualcodons.Rmd is the R script I've been working on.  It doesn't work anymore as I've changed around how my tables work.
+individualcodons.Rmd is the R script I've been working on.  
