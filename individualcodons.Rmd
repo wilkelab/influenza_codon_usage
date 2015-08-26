@@ -53,17 +53,32 @@ rm(cors)
 corp
 ```
 
-I mostly just copy-pasted the stats stuff.  I think I understand them, but I'll have to mess around with them a bit more. NEways, now ima dump that into a table with CAI and rtAI:
+I mostly just copy-pasted the stats stuff.  I think I understand them, but I'll have to mess around with them a bit more. 
+
+Anyways, now ima dump that into a table with CAI and rtAI.  I'm also including a table that shows the change in codon usage between my PB1 construct and the WT Udorn PB1.
 
 ``` {r}
 codonstats <- select(corp, sero, codon, p) %>% 
   left_join(select(intslope, codon, sero, slope)) %>% 
   left_join(select(codonvalues, codon, withIFN, noIFN, CAI)) %>% 
-  mutate(rtAI = withIFN/noIFN)
+  mutate(rtAI = withIFN/noIFN) %>% 
+  left_join(read.csv(file='construct_v_WT_change', head=TRUE, sep='\t'))
 ```
+
+Here are plots comparint slope, rtAI, and CAI.  I'm expecting positive slopes for rtAI vs slope, negative for the rest I guess.
 
 ```{r}
 ggplot(codonstats, aes(x=rtAI, y=slope, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
 ggplot(codonstats, aes(x=CAI, y=slope, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
 ggplot(codonstats, aes(x=rtAI, y=CAI, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
 ```
+
+Here are plots comparing the change between my construct and the WT with the rtAI, CAI and slope.
+
+```{r}
+ggplot(compareconstruct, aes(x=change, y=rtAI, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
+ggplot(compareconstruct, aes(x=change, y=CAI, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
+ggplot(compareconstruct, aes(x=change, y=slope, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
+```
+
+I'm really not sure hot to interpret this, though...
