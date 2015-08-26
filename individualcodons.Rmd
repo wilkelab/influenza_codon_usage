@@ -23,13 +23,19 @@ Now I can plot!
 
 __Number of each codon found in strain__
 ```{r}
-ggplot(PB1, aes(x=coryear, y=(numcodon), color=sero))+geom_point()+ background_grid(major = "xy", minor = "none")+facet_wrap(~codon)
+ggplot(PB1, aes(x=coryear, y=(numcodon), color=sero)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  facet_wrap(~codon)
 ```
 
 
 __Proportion of each codon used for its amino acid in strain__
 ```{r}
-ggplot(PB1, aes(x=coryear, y=(numcodon/numaa), color=sero))+geom_point()+ background_grid(major = "xy", minor = "none")+facet_wrap(~codon)
+ggplot(PB1, aes(x=coryear, y=(numcodon/numaa), color=sero)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  facet_wrap(~codon)
 ```
 
 __Pulling out linear regression__
@@ -65,20 +71,49 @@ codonstats <- select(corp, sero, codon, p) %>%
   left_join(read.csv(file='construct_v_WT_change', head=TRUE, sep='\t'))
 ```
 
-Here are plots comparint slope, rtAI, and CAI.  I'm expecting positive slopes for rtAI vs slope, negative for the rest I guess.
+Here are plots comparing slope, rtAI, and CAI.  I'm expecting positive slopes for rtAI vs slope, negative for the rest I guess.
 
 ```{r}
-ggplot(codonstats, aes(x=rtAI, y=slope, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
-ggplot(codonstats, aes(x=CAI, y=slope, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
-ggplot(codonstats, aes(x=rtAI, y=CAI, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
+ggplot(codonstats, aes(x=rtAI, y=slope, label=codon)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  geom_text(size = 5) + 
+  facet_wrap(~sero)
+
+ggplot(codonstats, aes(x=CAI, y=slope, label=codon)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  geom_text(size = 5) + 
+  facet_wrap(~sero)
+
+ggplot(codonstats, aes(x=rtAI, y=CAI, label=codon)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  geom_text(size = 5) + 
+  facet_wrap(~sero)
+
 ```
 
 Here are plots comparing the change between my construct and the WT with the rtAI, CAI and slope.
 
 ```{r}
-ggplot(compareconstruct, aes(x=change, y=rtAI, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
-ggplot(compareconstruct, aes(x=change, y=CAI, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
-ggplot(compareconstruct, aes(x=change, y=slope, label=codon))+geom_point()+ background_grid(major = "xy", minor = "none")+geom_text(size = 5)+facet_wrap(~sero)
+ggplot(codonstats, aes(x=change, y=rtAI, label=codon)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  geom_text(size = 5) + 
+  facet_wrap(~sero)
+
+ggplot(codonstats, aes(x=change, y=CAI, label=codon)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  geom_text(size = 5) + 
+  facet_wrap(~sero)
+
+ggplot(codonstats, aes(x=change, y=slope, label=codon)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  geom_text(size = 5) + 
+  facet_wrap(~sero)
 ```
 
 I'm really not sure hot to interpret this, though...
