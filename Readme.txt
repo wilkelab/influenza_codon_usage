@@ -27,7 +27,9 @@ CAImax - the maximum RSCU for the amino acid the given codon codes for based off
 CAImin - the minimum RSCU for the amino acid the given codon codes for based off the top 200 most highly expressed genes across multiple cell types as determined by ATLAS-EMBL database
 GC - the GC content of the codon
 
-construct_v_WT_change is a table showing how the usage of each codon changed between WT Udorn and my construct of PB1 that performs better in IFN treated cells
+construct_v_WT_change is a table showing how the usage of each codon changed between WT Udorn and my constructs of PB1 that performs better in IFN treated cells
+change_new - my more recent construct that nearly exactly reflects codon usage in modern viruses
+change_con - my construct designed by altering the CAI of Udorn, but keeping the GC% constant
 
 tidyitup is the python script used to convert the sequence files to the tables
 

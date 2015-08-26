@@ -94,26 +94,58 @@ ggplot(codonstats, aes(x=rtAI, y=CAI, label=codon)) +
 
 ```
 
-Here are plots comparing the change between my construct and the WT with the rtAI, CAI and slope.
+Here are plots comparing the change between my older CAI construct and the WT with the rtAI, CAI and slope.
 
 ```{r}
-ggplot(codonstats, aes(x=change, y=rtAI, label=codon)) + 
+codonstats %>% filter(sero == "H3N2") %>% 
+  ggplot(aes(x=change_con, y=rtAI, label=codon)) + 
   geom_point() + 
   background_grid(major = "xy", minor = "none") + 
-  geom_text(size = 5) + 
-  facet_wrap(~sero)
+  geom_text(size = 5)
 
-ggplot(codonstats, aes(x=change, y=CAI, label=codon)) + 
+codonstats %>% filter(sero == "H3N2") %>% 
+  ggplot(aes(x=change_con, y=CAI, label=codon)) + 
   geom_point() + 
   background_grid(major = "xy", minor = "none") + 
-  geom_text(size = 5) + 
-  facet_wrap(~sero)
+  geom_text(size = 5)
 
-ggplot(codonstats, aes(x=change, y=slope, label=codon)) + 
+codonstats %>% filter(sero == "H3N2") %>% 
+  ggplot(aes(x=change_con, y=slope, label=codon)) + 
   geom_point() + 
   background_grid(major = "xy", minor = "none") + 
-  geom_text(size = 5) + 
-  facet_wrap(~sero)
+  geom_text(size = 5)
 ```
 
-I'm really not sure hot to interpret this, though...
+Here are plots comparing the change between my construct exactly replicating newer H3N2 codon usage and the WT with the rtAI, CAI and slope.
+
+```{r}
+codonstats %>% filter(sero == "H3N2") %>% 
+  ggplot(aes(x=change_new, y=rtAI, label=codon)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  geom_text(size = 5)
+
+codonstats %>% filter(sero == "H3N2") %>% 
+  ggplot(aes(x=change_new, y=CAI, label=codon)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  geom_text(size = 5)
+
+codonstats %>% filter(sero == "H3N2") %>% 
+  ggplot(aes(x=change_new, y=slope, label=codon)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  geom_text(size = 5)
+```
+
+Comparing the change in codon usage from WT for both constructs.
+
+```{r}
+codonstats %>% filter(sero == "H3N2") %>% 
+  ggplot(aes(x=change_new, y=change_con, label=codon)) + 
+  geom_point() + 
+  background_grid(major = "xy", minor = "none") + 
+  geom_text(size = 5)
+```
+
+I'm really not sure how to interpret this, though...
