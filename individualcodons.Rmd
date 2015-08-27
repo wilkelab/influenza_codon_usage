@@ -10,11 +10,11 @@ library(reshape)
 
 Here we go reading up all my tables and merging 'em together.  I haven't incorporated read() or the join function yet, but its faster cause smaller files:
 ```{r}
-PB1 <- merge_all(list(read.csv(file='H2N2PB1.fa.tidy', head=TRUE, sep='\t'), 
-                      read.csv(file='H1N1PB1.fa.tidy', head=TRUE, sep='\t'), 
-                      read.csv(file='H3N2PB1.fa.tidy', head=TRUE, sep='\t')), 
+PB1 <- merge_all(list(read.csv(file='H2N2PB1.tidy.csv', head=TRUE, sep='\t'), 
+                      read.csv(file='H1N1PB1.tidy.csv', head=TRUE, sep='\t'), 
+                      read.csv(file='H3N2PB1.tidy.csv', head=TRUE, sep='\t')), 
                  all.x=TRUE, all.y=TRUE)
-codonvalues <- read.csv(file='codonvalues', head=TRUE, sep='\t')
+codonvalues <- read.csv(file='codonvalues.csv', head=TRUE, sep='\t')
 ```
 
 Now I gotta table with: strain, sero, year, coryear, codon, numcodon, numaa.  I also have another table holding a bunch of values associated with each codon.
@@ -68,7 +68,7 @@ codonstats <- select(corp, sero, codon, p) %>%
   left_join(select(intslope, codon, sero, slope)) %>% 
   left_join(select(codonvalues, codon, withIFN, noIFN, CAI)) %>% 
   mutate(rtAI = withIFN/noIFN) %>% 
-  left_join(read.csv(file='construct_v_WT_change', head=TRUE, sep='\t'))
+  left_join(read.csv(file='construct_v_WT_change.csv', head=TRUE, sep='\t'))
 ```
 
 Here are plots comparing slope, rtAI, and CAI.  I'm expecting positive slopes for rtAI vs slope, negative for the rest I guess.
