@@ -22,18 +22,20 @@ Now I gotta table with: strain, sero, year, coryear, codon, numcodon, numaa.  I 
 Now I can plot!
 
 __Number of each codon found in strain__
-```{r}
+```{r fig.height=14, fig.width=14}
 ggplot(PB1, aes(x=coryear, y=(numcodon), color=sero)) + 
   geom_point() + 
+#  geom_smooth(method='lm', se=FALSE) +
   background_grid(major = "xy", minor = "none") + 
   facet_wrap(~codon)
 ```
 
 
 __Proportion of each codon used for its amino acid in strain__
-```{r}
+```{r fig.height=14, fig.width=14}
 ggplot(PB1, aes(x=coryear, y=(numcodon/numaa), color=sero)) + 
   geom_point() + 
+#  geom_smooth(method='lm', se=FALSE) +
   background_grid(major = "xy", minor = "none") + 
   facet_wrap(~codon)
 ```
@@ -50,6 +52,9 @@ intslope
 
 Nice!  slopes and intercetps GOT!
 Next up: p values
+
+*Note by Claus:* You should be able to obtain p values directly from the linear regression using `p.value = summary(.$lm.result)$coef[4,2]` in the above code.
+
 
 ```{r}
 PB1 %>% group_by(sero, codon) %>%
@@ -73,7 +78,7 @@ codonstats <- select(corp, sero, codon, p) %>%
 
 Here are plots comparing slope, rtAI, and CAI.  I'm expecting positive slopes for rtAI vs slope, negative for the rest I guess.
 
-```{r}
+```{r fig.width=10}
 ggplot(codonstats, aes(x=rtAI, y=slope, label=codon)) + 
   geom_point() + 
   background_grid(major = "xy", minor = "none") + 
