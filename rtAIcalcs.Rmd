@@ -1,0 +1,69 @@
+```{r global_options, include=FALSE}
+library(magrittr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(cowplot)
+library(reshape)
+```
+```{r}
+PB1 <- merge_all(list(read.csv(file='H2N2PB1.tidy.csv', head=TRUE, sep='\t'), 
+                      read.csv(file='H1N1PB1.tidy.csv', head=TRUE, sep='\t'), 
+                      read.csv(file='H3N2PB1.tidy.csv', head=TRUE, sep='\t')), 
+                 all.x=TRUE, all.y=TRUE)
+codonvalues <- read.csv(file='codonvalues.csv', head=TRUE, sep='\t')
+rtPB1 <- PB1 %>% left_join(select(codonvalues, codon, AIFNratiolib2, AnoIFNratiolib2, AIFNreadslib2, AnoIFNreadslib2, AIFNratiolib1, AnoIFNratiolib1, AIFNreadslib1, AnoIFNreadslib1))
+```
+
+*rtAI graphs based on older library*
+Cutoffs are 0, 500, 1000 (removes 8 codons)
+```{r}
+rtPB1 %>% 
+  filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>%
+  group_by(sero, strain) %>%
+  summarize(coryear=mean(coryear),
+            score=(sum(numcodon*AIFNratiolib1/AnoIFNratiolib1))/sum(numcodon)) %>%
+  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
+
+rtPB1 %>% 
+  filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
+  filter(AIFNreadslib1 >= 500, AnoIFNreadslib1 >= 500) %>% 
+  group_by(sero, strain) %>%
+  summarize(coryear=mean(coryear),
+            score=(sum(numcodon*AIFNratiolib1/AnoIFNratiolib1))/sum(numcodon)) %>%
+  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
+
+rtPB1 %>% 
+  filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
+  filter(AIFNreadslib1 >= 1000, AnoIFNreadslib1 >= 1000) %>% 
+  group_by(sero, strain) %>%
+  summarize(coryear=mean(coryear),
+            score=(sum(numcodon*AIFNratiolib1/AnoIFNratiolib1))/sum(numcodon)) %>%
+  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
+```
+
+*rtAI graphs based on newer library*
+Cutoffs for read # are 0, 1000 (removes one codon), 10000 (removes 8 codons).
+```{r}
+rtPB1 %>% group_by(sero, strain) %>% 
+  filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>%
+  summarize(coryear=mean(coryear),
+            score=(sum(numcodon*AIFNratiolib2/AnoIFNratiolib2))/sum(numcodon)) %>%
+  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
+
+rtPB1 %>% 
+  filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
+  filter(AIFNreadslib2 >= 1000, AnoIFNreadslib2 >= 1000) %>% 
+  group_by(sero, strain) %>%
+  summarize(coryear=mean(coryear),
+            score=(sum(numcodon*AIFNratiolib2/AnoIFNratiolib2))/sum(numcodon)) %>%
+  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
+
+rtPB1 %>% 
+  filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
+  filter(AIFNreadslib2 >= 10000, AnoIFNreadslib2 >= 10000) %>% 
+  group_by(sero, strain) %>%
+  summarize(coryear=mean(coryear),
+            score=(sum(numcodon*AIFNratiolib2/AnoIFNratiolib2))/sum(numcodon)) %>%
+  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
+```
