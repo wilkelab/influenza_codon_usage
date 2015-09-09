@@ -133,4 +133,4 @@ rtPB1 %>% group_by(sero, strain) %>%
 Doesn't really change anything, although this probably is a better way to filter which codons I want to use overall...
 
 __Maybe I just need to get a better library sequenced__
-When I filter by 10,000 reads, the whole thing looks pretty good, but that's removing 8 codons from the analysis.  Those're low frequency tRNAs and it might just be that my library prep just didn't get a representative sample from them.
+When I filter by 10,000 reads, the whole thing looks pretty good, but that's removing 8 codons from the analysis.  Those're low frequency tRNAs and it might be that my library prep just didn't get a representative sample from them.
