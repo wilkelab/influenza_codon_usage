@@ -40,6 +40,16 @@ ggplot(PB1, aes(x=coryear, y=(numcodon/numaa), color=sero)) +
   facet_wrap(~codon)
 ```
 
+__Number of each amino acid found in strain__
+```{r fig.height=14, fig.width=14}
+PB1 %>% left_join(select(codonvalues, codon, aa)) %>% group_by(sero, strain, aa) %>% summarize(time = mean(coryear), numaa = sum(numcodon)) %>%
+  ggplot(aes(x=time, y=numaa, color=sero)) + 
+  geom_point() + 
+  geom_smooth(method='lm', se=FALSE) +
+  background_grid(major = "xy", minor = "none") + 
+  facet_wrap(~aa)
+```
+
 __Pulling out linear regression__
 ```{r}
 PB1 %>% group_by(sero, codon) %>% do(lm.result = lm((numcodon) ~ coryear, data=.)) -> fitted.models
@@ -92,7 +102,7 @@ ggplot(codonstats, aes(x=CAI, y=slope, label=codon, color=aa)) +
   facet_wrap(~sero)
 
 codonstats %>% filter(sero == "H3N2") %>% 
-  ggplot(aes(x=AIFNratiolib1/AnoIFNratiolib1, y=CAI, label=codon, color=aa)) + 
+  ggplot(aes(x=AIFNratiolib2/AnoIFNratiolib2, y=CAI, label=codon, color=aa)) + 
   geom_point() + 
   background_grid(major = "xy", minor = "none") + 
   geom_text(size = 5) + 

@@ -9,10 +9,10 @@ library(reshape)
 ```{r}
 PB1 <- merge_all(list(read.csv(file='H2N2PB1.tidy.csv', head=TRUE, sep='\t'), 
                       read.csv(file='H1N1PB1.tidy.csv', head=TRUE, sep='\t'), 
-                      read.csv(file='H3N2PB1.tidy.csv', head=TRUE, sep='\t')), 
-                 all.x=TRUE, all.y=TRUE)
+                      read.csv(file='H3N2PB1.tidy.csv', head=TRUE, sep='\t'),
+                 all.x=TRUE, all.y=TRUE))
 codonvalues <- read.csv(file='codonvalues.csv', head=TRUE, sep='\t')
-rtPB1 <- PB1 %>% left_join(select(codonvalues, codon, AIFNratiolib2, AnoIFNratiolib2, AIFNreadslib2, AnoIFNreadslib2, AIFNratiolib1, AnoIFNratiolib1, AIFNreadslib1, AnoIFNreadslib1, IFN2max, noIFN2min))
+rtPB1 <- PB1 %>% left_join(codonvalues)
 ```
 
 This whole thing has gotten pretty bloated!  Probably don't want to run it all at once!
@@ -25,7 +25,9 @@ rtPB1 %>%
   group_by(sero, strain) %>%
   summarize(coryear=mean(coryear),
             score=(sum(numcodon*AIFNratiolib1/AnoIFNratiolib1))/sum(numcodon)) %>%
-  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
+  ggplot(aes(x=coryear, y=score, color=sero)) + 
+  geom_point() + 
+  scale_fill_manual(values=c("red", "blue", "green"))
 
 rtPB1 %>% 
   filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
@@ -69,6 +71,34 @@ rtPB1 %>%
             score=(sum(numcodon*AIFNratiolib2/AnoIFNratiolib2))/sum(numcodon)) %>%
   ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
 ```
+
+
+*rtAI graphs based on newer library, different wobble calling*
+Cutoffs for read # are 0, 1000 (removes one codon), 10000 (removes 8 codons).
+```{r}
+rtPB1 %>% group_by(sero, strain) %>% 
+  filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>%
+  summarize(coryear=mean(coryear),
+            score=(sum(numcodon*Altw.IFNratiolib2/Altw.AnoIFNratiolib2))/sum(numcodon)) %>%
+  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
+
+rtPB1 %>% 
+  filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
+  filter(Altw.AIFNreadslib2 >= 1000, Altw.AnoIFNreadslib2 >= 1000) %>% 
+  group_by(sero, strain) %>%
+  summarize(coryear=mean(coryear),
+            score=(sum(numcodon*Altw.IFNratiolib2/Altw.AnoIFNratiolib2))/sum(numcodon)) %>%
+  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
+
+rtPB1 %>% 
+  filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
+  filter(Altw.AIFNreadslib2 >= 10000, Altw.AnoIFNreadslib2 >= 10000) %>% 
+  group_by(sero, strain) %>%
+  summarize(coryear=mean(coryear),
+            score=(sum(numcodon*Altw.IFNratiolib2/Altw.AnoIFNratiolib2))/sum(numcodon)) %>%
+  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point()
+```
+
 
 OK.  gonna try calculating rtAI more like I do CAI.
 Can't do geometric means with these values it seems like?  The difference between rtAIobs and rtAImax becomes so great that it just rounds off to 0?  I'm not totally sure, but rtAIobs/rtAImax found with the mean instead makes a reallllly small number (see below).  There is maybe a slight trend downwards in the graph below. That ain't great.
