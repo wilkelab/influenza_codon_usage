@@ -51,24 +51,72 @@ Cutoffs for read # are 0, 1000 (removes one codon), 10000 (removes 8 codons).
 rtPB1 %>% group_by(sero, strain) %>% 
   filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>%
   summarize(coryear=mean(coryear),
-            score=(sum(numcodon*AIFNratiolib2/AnoIFNratiolib2))/sum(numcodon)) %>%
-  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE)
+            score=(sum(numcodon*AIFNratiolib2/AnoIFNratiolib2))/sum(numcodon))  -> scores
+  
+scores %>% ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE)
+scores %>% group_by(sero) %>% do(lm.result = lm((score) ~ coryear, data=.)) -> fitted.models
+intslope <- do(fitted.models, data.frame(sero=.$sero, 
+                             intercept=coef(.$lm.result)[1], 
+                             slope=coef(.$lm.result)[2]))
+rm(fitted.models)
+scores %>% do(cor.res = cor.test(.$score, .$coryear)) -> cors
+corp <- do(cors, data.frame(sero=.$sero, cor=.$cor.res$estimate, p=.$cor.res$p.value))
+rm(cors)
+ynp <- select(intslope, sero, slope) %>% left_join(select(corp, sero, p))
+rm(corp)
+rm(intslope)
+rm(scores)
+ynp
+
+
+
 
 rtPB1 %>% 
   filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
   filter(AIFNreadslib2 >= 1000, AnoIFNreadslib2 >= 1000) %>% 
   group_by(sero, strain) %>%
   summarize(coryear=mean(coryear),
-            score=(sum(numcodon*AIFNratiolib2/AnoIFNratiolib2))/sum(numcodon)) %>%
-  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE)
+            score=(sum(numcodon*AIFNratiolib2/AnoIFNratiolib2))/sum(numcodon)) -> scores
+  
+scores %>% ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE)
+scores %>% group_by(sero) %>% do(lm.result = lm((score) ~ coryear, data=.)) -> fitted.models
+intslope <- do(fitted.models, data.frame(sero=.$sero, 
+                             intercept=coef(.$lm.result)[1], 
+                             slope=coef(.$lm.result)[2]))
+rm(fitted.models)
+scores %>% do(cor.res = cor.test(.$score, .$coryear)) -> cors
+corp <- do(cors, data.frame(sero=.$sero, cor=.$cor.res$estimate, p=.$cor.res$p.value))
+rm(cors)
+ynp <- select(intslope, sero, slope) %>% left_join(select(corp, sero, p))
+rm(corp)
+rm(intslope)
+rm(scores)
+ynp
+
+
+
 
 rtPB1 %>% 
   filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
   filter(AIFNreadslib2 >= 10000, AnoIFNreadslib2 >= 10000) %>% 
   group_by(sero, strain) %>%
   summarize(coryear=mean(coryear),
-            score=(sum(numcodon*AIFNratiolib2/AnoIFNratiolib2))/sum(numcodon)) %>%
-  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE)
+            score=(sum(numcodon*AIFNratiolib2/AnoIFNratiolib2))/sum(numcodon)) -> scores
+  
+scores %>% ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE)
+scores %>% group_by(sero) %>% do(lm.result = lm((score) ~ coryear, data=.)) -> fitted.models
+intslope <- do(fitted.models, data.frame(sero=.$sero, 
+                             intercept=coef(.$lm.result)[1], 
+                             slope=coef(.$lm.result)[2]))
+rm(fitted.models)
+scores %>% do(cor.res = cor.test(.$score, .$coryear)) -> cors
+corp <- do(cors, data.frame(sero=.$sero, cor=.$cor.res$estimate, p=.$cor.res$p.value))
+rm(cors)
+ynp <- select(intslope, sero, slope) %>% left_join(select(corp, sero, p))
+rm(corp)
+rm(intslope)
+rm(scores)
+ynp
 ```
 
 
@@ -78,27 +126,73 @@ Cutoffs for read # are 0, 500 (removes one codon), 1000 (removes 8 codons).
 rtPB1 %>% group_by(sero, strain) %>% 
   filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>%
   summarize(coryear=mean(coryear),
-            score=(sum(numcodon*Altw.IFNratiolib2/Altw.AnoIFNratiolib2))/sum(numcodon)) %>%
-  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE)
+            score=(sum(numcodon*Altw.IFNratiolib2/Altw.AnoIFNratiolib2))/sum(numcodon)) -> scores
+  
+scores %>% ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE)
+scores %>% group_by(sero) %>% do(lm.result = lm((score) ~ coryear, data=.)) -> fitted.models
+intslope <- do(fitted.models, data.frame(sero=.$sero, 
+                             intercept=coef(.$lm.result)[1], 
+                             slope=coef(.$lm.result)[2]))
+rm(fitted.models)
+scores %>% do(cor.res = cor.test(.$score, .$coryear)) -> cors
+corp <- do(cors, data.frame(sero=.$sero, cor=.$cor.res$estimate, p=.$cor.res$p.value))
+rm(cors)
+ynp <- select(intslope, sero, slope) %>% left_join(select(corp, sero, p))
+rm(corp)
+rm(intslope)
+rm(scores)
+ynp
+
+
+
 
 rtPB1 %>% 
   filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
   filter(Altw.AIFNreadslib2 >= 500, Altw.AnoIFNreadslib2 >= 500) %>% 
   group_by(sero, strain) %>%
   summarize(coryear=mean(coryear),
-            score=(sum(numcodon*Altw.IFNratiolib2/Altw.AnoIFNratiolib2))/sum(numcodon)) %>%
-  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() + ylim(.965, .98) +geom_smooth(method='lm', se=FALSE)
+            score=(sum(numcodon*Altw.IFNratiolib2/Altw.AnoIFNratiolib2))/sum(numcodon)) -> scores
+  
+scores %>% ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE) +ylim(.965, .98)
+scores %>% group_by(sero) %>% do(lm.result = lm((score) ~ coryear, data=.)) -> fitted.models
+intslope <- do(fitted.models, data.frame(sero=.$sero, 
+                             intercept=coef(.$lm.result)[1], 
+                             slope=coef(.$lm.result)[2]))
+rm(fitted.models)
+scores %>% do(cor.res = cor.test(.$score, .$coryear)) -> cors
+corp <- do(cors, data.frame(sero=.$sero, cor=.$cor.res$estimate, p=.$cor.res$p.value))
+rm(cors)
+ynp <- select(intslope, sero, slope) %>% left_join(select(corp, sero, p))
+rm(corp)
+rm(intslope)
+rm(scores)
+ynp
+
+
 
 rtPB1 %>% 
   filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
-  filter(Altw.AIFNreadslib2 >= 1000, Altw.AnoIFNreadslib2 >= 1000) %>% 
+  filter(Altw.AIFNreadslib2 >= 10000, Altw.AnoIFNreadslib2 >= 10000) %>% 
   group_by(sero, strain) %>%
   summarize(coryear=mean(coryear),
-            score=(sum(numcodon*Altw.IFNratiolib2/Altw.AnoIFNratiolib2))/sum(numcodon)) %>%
-  ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE)
+            score=(sum(numcodon*Altw.IFNratiolib2/Altw.AnoIFNratiolib2))/sum(numcodon)) -> scores
+scores %>% ggplot(aes(x=coryear, y=score, color=sero)) + geom_point() +geom_smooth(method='lm', se=FALSE)
+scores %>% group_by(sero) %>% do(lm.result = lm((score) ~ coryear, data=.)) -> fitted.models
+intslope <- do(fitted.models, data.frame(sero=.$sero, 
+                             intercept=coef(.$lm.result)[1], 
+                             slope=coef(.$lm.result)[2]))
+rm(fitted.models)
+scores %>% do(cor.res = cor.test(.$score, .$coryear)) -> cors
+corp <- do(cors, data.frame(sero=.$sero, cor=.$cor.res$estimate, p=.$cor.res$p.value))
+rm(cors)
+ynp <- select(intslope, sero, slope) %>% left_join(select(corp, sero, p))
+rm(corp)
+rm(intslope)
+rm(scores)
+ynp
 ```
 
-Alright, lets get some slopes n stuff.  I'm sure this is an insanely inefficient way of doing this...  All I gotta do though is cutnpaste the summaries for the plots down below, right before -> scores
+Alright, lets get some slopes n stuff.  I'm sure this is an insanely inefficient way of doing this...  All I gotta do though is cutnpaste the summaries for the plots down below, right before -> scores.   Actually, I'm gonna dump all this back up into those graphs directly...
 ```{r}
 rtPB1 %>% 
   filter(codon!='ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>% 
