@@ -1,0 +1,38 @@
+```{r}
+library(magrittr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(cowplot)
+library(reshape)
+library(DESeq2)
+```
+
+
+```{r}
+data <- read.csv('anticodoncounts.csv', header=TRUE, sep=',')
+coldata <- read.csv(file='headerinfo.csv', head=TRUE, sep=',')
+data[7] <- NULL
+data[7] <- NULL
+coldata<-coldata[-6,]
+	
+matrix.please<-function(x) {
+    m<-as.matrix(x[,-1])
+    rownames(m)<-x[,1]
+    m
+}
+
+data <- matrix.please(data)
+is.numeric(data)
+
+dds <- DESeqDataSetFromMatrix(countData = data,
+                              colData = coldata,
+                              design = ~ treatment)
+
+
+dds <- DESeq(dds)
+
+
+res<-results(dds)
+res[order(res$padj),]
+```
