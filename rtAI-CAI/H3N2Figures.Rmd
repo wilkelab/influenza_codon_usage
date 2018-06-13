@@ -1,0 +1,322 @@
+```{r global_options, include=FALSE}
+library(magrittr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(cowplot)
+library(reshape)
+library(MASS)
+library(scales)
+library(grid)
+library(ggrepel)
+```
+```{r}
+PB1<- merge_all(list(
+  (read.csv(file='../sequences/H1N1PB1.fasta.codoncounts', head=TRUE, sep='\t')%>%mutate(sero='H1N1')), 
+  (read.csv(file='../sequences/H2N2PB1.fasta.codoncounts', head=TRUE, sep='\t')%>%mutate(sero='H2N2')),
+  (read.csv(file='../sequences/H3N2PB1.fasta.codoncounts', head=TRUE, sep='\t')%>%mutate(sero='H3N2'))), all.x=TRUE, all.y=TRUE) 
+
+codons <- read.csv(file='../tRNA-seq results/codonvalues.csv', head=TRUE, sep=',') %>%
+  mutate(codrtai=log(AIFNratiosum/AnoIFNratiosum)) %>%
+  mutate(posneg=codrtai/abs(codrtai))
+
+
+PB1 <- PB1  %>% 
+  mutate(codon=tolower(codon)) %>% 
+  left_join(codons)
+
+constructs <- read.csv(file='../sequences/constructs.fasta.codoncounts', head=TRUE, sep=',') %>% 
+  mutate(codon=tolower(codon)) %>% 
+  left_join(codons)
+```
+
+*CAI for H3N2*
+```{r}
+PB1 %>% 
+  filter(codon != 'ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA', sero=='H3N2') %>%
+  group_by(sero, year, strain) %>% 
+  mutate(cods = sum(numcodon), initC = CAI ** numcodon, initCm = CAImax ** numcodon) %>% 
+  summarize(score=((prod(initC))**mean(1/cods))/((prod(initCm))**mean(1/cods))) -> CAIscores
+
+PB1 %>% 
+  filter(codon != 'ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA', year<=1997, sero=='H3N2') %>%
+  group_by(sero, year, strain) %>% 
+  mutate(cods = sum(numcodon), initC = CAI ** numcodon, initCm = CAImax ** numcodon) %>% 
+  summarize(score=((prod(initC))**mean(1/cods))/((prod(initCm))**mean(1/cods))) -> CAI30yr
+
+constructs %>%
+  filter(sero == 'Construct #1' | sero == 'Construct #2' | sero == 'Udorn') %>%
+  filter(codon != 'ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA') %>%
+  group_by(sero, year, strain) %>% 
+  mutate(cods = sum(numcodon), initC = CAI ** numcodon, initCm = CAImax ** numcodon) %>% 
+  summarize(score=((prod(initC))**mean(1/cods))/((prod(initCm))**mean(1/cods))) -> conCAIscores
+
+siglabels <- function(){
+    function(x) format(x,nsmall = 3,scientific = FALSE)
+}
+
+CAIscores %>% 
+  ggplot(aes(x=year, y=score)) + 
+  geom_vline(aes(xintercept=1997), color='darkgrey', linetype=2) +
+  geom_hline(data=conCAIscores, aes(yintercept=score), linetype=3, color="#000000") +
+  geom_smooth(data=CAI30yr, aes(x=year, y=score), method='lm', se=FALSE, fullrange=FALSE, color='darkgrey', size=0.5) +
+  geom_point(color="#3333FF", size=.5) +
+  geom_point(data=conCAIscores, aes(x=year+2017, y=score), size=4, shape=18, color="#000000") +
+  geom_label(data=conCAIscores, aes(x=year+2017, y=score, label = strain), size=4, hjust = 0, nudge_x = .05, color="#000000") +
+  scale_y_continuous(labels = siglabels(), limits = c(.565, .595), 
+                     name='CAI') +
+  scale_x_continuous(name='Isolation Date (year)') +
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size=10, face="bold"),
+        legend.text=element_text(size=12),
+        legend.title=element_text(size=12,face="bold")) + 
+  theme(legend.position="none") + 
+  theme(plot.margin = unit(c(0,2,0,0), "cm")) -> noclip
+
+gt <- ggplot_gtable(ggplot_build(noclip))
+gt$layout$clip[gt$layout$name=="panel"] <- "off"
+
+ggdraw(gt)+draw_label(expression('R = -0.914'), x=.3, y=.25, vjust = 1, hjust = 1, size = 14, fontface = 'bold')
+#p=0.017
+
+(cor(CAI30yr$year, CAI30yr$score))
+```
+
+*GC for H3N2*
+```{r}
+PB1 %>% 
+  filter(codon != 'ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA', sero=='H3N2') %>%
+  group_by(sero, year, strain) %>% 
+  summarize(score=(sum(numcodon*GC))/sum(numcodon)) -> GCscores
+
+PB1 %>% 
+  filter(codon != 'ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA', year<=1997, sero=='H3N2') %>%
+  group_by(sero, year, strain) %>% 
+  summarize(score=(sum(numcodon*GC))/sum(numcodon)) -> GC30yr
+
+constructs %>% 
+  filter(sero == 'Construct #1' | sero == 'Construct #2' | sero == 'Udorn') %>%
+  filter(codon != 'ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA', strain!='Construct #1') %>%
+  group_by(sero, year, strain) %>% 
+  summarize(score=(sum(numcodon*GC))/sum(numcodon)) -> conGC1scores
+
+constructs %>% 
+  filter(sero == 'Construct #1' | sero == 'Construct #2' | sero == 'Udorn') %>%
+  filter(codon != 'ATG', codon!='TGG', codon!='TAA', codon!='TAG', codon!='TGA', strain=='Construct #1') %>%
+  group_by(sero, year, strain) %>% 
+  summarize(score=(sum(numcodon*GC))/sum(numcodon)) -> conGC2scores
+
+siglabels <- function(){
+    function(x) format(x,nsmall = 3,scientific = FALSE)
+}
+
+GCscores %>%
+  ggplot(aes(x=year, y=score)) + 
+  geom_vline(aes(xintercept=1997), color='darkgrey', linetype=2) +
+  geom_hline(data=conGC1scores, aes(yintercept=score), linetype=3, color="#000000") +
+  geom_smooth(data=GC30yr, aes(x=year, y=score), method='lm', se=FALSE, fullrange=FALSE, color='darkgrey', size=0.5) +
+  geom_point(color = "#3333FF", size=0.5) +
+  geom_point(data=conGC1scores, aes(x=year+2017, y=score), size=4, shape=18, color="#000000") +
+  geom_label(data=conGC2scores, aes(x=year+2017, y=score, label = strain), size=4, hjust = 0, vjust = -.55, nudge_x = 0.05, color="#000000") +
+  geom_label(data=conGC1scores, aes(x=year+2017, y=score, label = strain), size=4, hjust = 0, nudge_x = 0.05, color="#000000") +
+  scale_y_continuous(labels = siglabels(), limits = c(.415, .43), name='GC content') +
+  scale_x_continuous(name='Isolation Date (year)') +
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size=10, face="bold"),
+        legend.text=element_text(size=12),
+        legend.title=element_text(size=12,face="bold")) + 
+  theme(legend.position="none") + 
+  theme(plot.margin = unit(c(0,2,0,0), "cm")) -> noclip
+
+gt <- ggplot_gtable(ggplot_build(noclip))
+gt$layout$clip[gt$layout$name=="panel"] <- "off"
+
+
+ggdraw(gt)+draw_label(expression('R = -0.562'), x=.3, y=.25, vjust = 1, hjust = 1, size = 14, fontface = 'bold')
+#p=0.059
+
+(cor(GC30yr$year, GC30yr$score))
+#R=-0.562 p=0.509
+```
+
+*rtAI for H3N2*
+```{r}
+PB1 %>%
+  filter(sero=='H3N2', codon !='tta') %>%
+  group_by(sero, year, strain) %>%
+  summarize(score=(sum(numcodon*log(AIFNratiosum/AnoIFNratiosum)))/sum(numcodon)) -> rtAIscores
+  #summarize(score=(sum(numcodon*abs(log(AIFNratiosum/AnoIFNratiosum))))/sum(numcodon)) -> rtAIscores
+
+constructs %>%
+  filter(sero == 'sig1' | sero == 'sig2' | sero == 'Udorn') %>%
+  filter(codon !='tta') %>%
+  group_by(sero, year, strain) %>%
+  summarize(score=(sum(numcodon*log(AIFNratiosum/AnoIFNratiosum)))/sum(numcodon)) -> conrtAIscores
+  #summarize(score=(sum(numcodon*abs(log(AIFNratiosum/AnoIFNratiosum))))/sum(numcodon)) -> conrtAIscores
+
+PB1 %>% 
+  filter(year<=1997, sero=='H3N2', codon !='tta') %>%
+  group_by(sero, year, strain) %>% 
+  mutate(cods = sum(numcodon), initC = CAI ** numcodon, initCm = CAImax ** numcodon) %>% 
+  summarize(score=(sum(numcodon*log(AIFNratiosum/AnoIFNratiosum)))/sum(numcodon)) -> rtAI30yr
+  #summarize(score=(sum(numcodon*abs(log(AIFNratiosum/AnoIFNratiosum))))/sum(numcodon)) -> rtAI30yr
+  
+rtAIscores %>%
+  ggplot(aes(x=year, y=score)) + 
+  geom_vline(aes(xintercept=1997), color='darkgrey', linetype=2) +
+  geom_hline(data=conrtAIscores, aes(yintercept=score), linetype=3, color="#000000") +
+  geom_smooth(data=rtAI30yr, aes(x=year, y=score), method='lm', se=FALSE, fullrange=FALSE, color='darkgrey', size=0.5) +
+  geom_point(color = "#3333FF", size=0.5) + 
+  geom_point(data=conrtAIscores, aes(x=year+2017, y=score), size=4, shape=18, color="#000000") +
+  geom_label(data=conrtAIscores, aes(x=year+2017, y = score, label = strain), size=4, hjust = 0, nudge_x = .05, color="#000000") +
+  xlab('Isolation Date (year)') + 
+  ylab('rtAI (IFN-treated/untreated)') +
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size=14, face="bold"),
+        legend.text=element_text(size=12),
+        legend.title=element_text(size=12,face="bold"))+
+  theme(legend.position="none") + 
+  theme(plot.margin = unit(c(0,2.2,0,0), "cm")) -> noclip
+
+gt <- ggplot_gtable(ggplot_build(noclip))
+gt$layout$clip[gt$layout$name=="panel"] <- "off"
+
+ggdraw(gt)+draw_label(expression('R = 0.903'), x=.5, y=.3, vjust = 1, hjust = 1, size = 14, fontface = 'bold')
+#p=.046
+
+cor(rtAI30yr$year, rtAI30yr$score)
+```
+
+
+number of pos/neg codons
+```{r}
+PB1 %>%
+  filter(sero=='H3N2', AIFNratiosum/AnoIFNratiosum>=1.2 |AIFNratiosum/AnoIFNratiosum<=.8, !is.na(posneg)) %>%
+  group_by(sero, year, strain) %>%
+  summarize(score=sum(numcodon*posneg)) -> rtAIscores
+
+constructs %>%
+  filter(AIFNratiosum/AnoIFNratiosum>=1.2 |AIFNratiosum/AnoIFNratiosum<=.8, !is.na(posneg)) %>%
+  group_by(sero, year, strain) %>%
+  summarize(score=sum(numcodon*posneg)) -> conrtAIscores
+
+PB1 %>% 
+  filter(year<=1997, sero=='H3N2', AIFNratiosum/AnoIFNratiosum>=1.2 |AIFNratiosum/AnoIFNratiosum<=.8, !is.na(posneg)) %>%
+  group_by(sero, year, strain) %>% 
+  summarize(score=sum(numcodon*posneg)) -> rtAI30yr
+  
+rtAIscores %>% ggplot(aes(x=year, y=score)) + 
+  geom_hline(data=conrtAIscores, aes(yintercept=score), linetype=3, color="#000000") +
+  geom_point(color = "#3333FF", size=0.5) + 
+  geom_point(data=conrtAIscores, aes(x=year+2017, y=score), size=4, shape=18, color="#000000") +
+  geom_label(data=conrtAIscores, aes(x=year+2017, y=score, label = strain), size=4, hjust = 0, nudge_x = .05, color="#000000") +
+  xlab('Isolation Date (year)') + 
+  ylab('absolute rtAI abs(IFN-treated/untreated)') +
+  #ylim(-40, -10)+
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size=14, face="bold"),
+        legend.text=element_text(size=12),
+        legend.title=element_text(size=12,face="bold"))+
+  theme(legend.position="none") + 
+  theme(plot.margin = unit(c(0,2.2,0,0), "cm")) -> noclip
+
+gt <- ggplot_gtable(ggplot_build(noclip))
+gt$layout$clip[gt$layout$name=="panel"] <- "off"
+
+ggdraw(gt)#+draw_label(expression('R=0.903 p=0.046'), x=.6, y=.3, vjust = 1, hjust = 1, size = 14, fontface = 'bold')
+
+cor(rtAI30yr$year, rtAI30yr$score)
+
+
+
+avgcodonyr <- PB1 %>% 
+  filter(sero=='H3N2', !is.na(posneg)) %>%
+  group_by(year, codon) %>% 
+  summarize(mediancodons=median(numcodon)) %>% left_join(codons)
+
+avgcodonyr %>% filter(year==1968 | year== 2015 | year == 1997 | year== 1983) -> test
+write.csv(test, file='codon-table-H3N2-4.csv')
+
+
+ratio <- codons %>% mutate(ratio = AIFNratiosum/AnoIFNratiosum) %>% filter(aa == 'Leu')
+```
+
+
+
+
+*CALU3 rtAI for H3N2*
+```{r}
+PB1<- merge_all(list(
+  (read.csv(file='../sequences/H1N1PB1.fasta.codoncounts', head=TRUE, sep='\t')%>%mutate(sero='H1N1')), 
+  (read.csv(file='../sequences/H2N2PB1.fasta.codoncounts', head=TRUE, sep='\t')%>%mutate(sero='H2N2')),
+  (read.csv(file='../sequences/H3N2PB1.fasta.codoncounts', head=TRUE, sep='\t')%>%mutate(sero='H3N2'))), all.x=TRUE, all.y=TRUE)
+
+PB1 <- PB1 %>% left_join(read.csv(file='../tRNA-seq results/calucodonvalues.csv', head=TRUE, sep=','))
+
+constructs <- read.csv(file='../sequences/constructs.fasta.codoncounts', head=TRUE, sep=',') %>% 
+  mutate(codon=tolower(codon)) %>% 
+  left_join(read.csv(file='../tRNA-seq results/calucodonvalues.csv', head=TRUE, sep=','))
+
+PB1 %>%
+  filter(sero=='H3N2', codon!='tta') %>%
+  group_by(sero, year, strain) %>%
+  summarize(score=(sum(numcodon*log(AIFNratiosum/AnoIFNratiosum)))/sum(numcodon)) -> rtAIscores
+
+constructs %>%
+  filter(codon !='tta', strain=='Construct #1'| strain=='Udorn') %>%
+  group_by(sero, year, strain) %>%
+  summarize(score=(sum(numcodon*log(AIFNratiosum/AnoIFNratiosum)))/sum(numcodon)) -> conrtAIscores
+
+PB1 %>% 
+  filter(year<=1997, sero=='H3N2', codon!='tta') %>%
+  group_by(sero, year, strain) %>% 
+  mutate(cods = sum(numcodon), initC = CAI ** numcodon, initCm = CAImax ** numcodon) %>% 
+  summarize(score=(sum(numcodon*log(AIFNratiosum/AnoIFNratiosum)))/sum(numcodon)) -> rtAI30yr
+  
+rtAIscores %>% ggplot(aes(x=year, y=score)) + 
+  geom_vline(aes(xintercept=1997), color='darkgrey', linetype=2) +
+  geom_point(color = "#3333FF", size=0.5) + 
+  geom_smooth(data=rtAI30yr, aes(x=year, y=score), method='lm', se=FALSE, fullrange=FALSE, color='darkgrey', size=0.5) +
+  xlab('Isolation Date (year)') + 
+  ylab('rtAI (IFN-treated/untreated)') +
+  ylim(0.03,0.05) +
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size=14, face="bold"),
+        legend.text=element_text(size=12),
+        legend.title=element_text(size=12,face="bold"))+
+  theme(legend.position="none") + 
+  theme(plot.margin = unit(c(0,0,0,0), "cm")) -> noclip
+
+gt <- ggplot_gtable(ggplot_build(noclip))
+gt$layout$clip[gt$layout$name=="panel"] <- "off"
+
+ggdraw(gt) + draw_label(expression('R=0.881'), x=.5, y=.25, vjust = 1, hjust = 1, size = 14, fontface = 'bold')
+
+cor(rtAI30yr$year, rtAI30yr$score)
+#R=0.881 p=0.056
+```
+
+
+
+
+
+
+```{r}
+codons %>% filter(AIFNratiosum/AnoIFNratiosum>=1.2| AIFNratiosum/AnoIFNratiosum<=.8) %>%
+  ggplot(aes(x=AIFNratiosum/AnoIFNratiosum, y=CAI, label=codon)) +
+  #geom_point() +
+  geom_text() + 
+  geom_text(data=(codons %>% filter(AIFNratiosum/AnoIFNratiosum<=1.2, AIFNratiosum/AnoIFNratiosum>=.8)), aes(x=AIFNratiosum/AnoIFNratiosum, y=CAI, label=codon), color='red', alpha=.5) +
+  geom_smooth(method='lm', se=FALSE, fullrange=FALSE, color='darkgrey', size=0.5)
+
+
+codoncalcs <- codons %>% filter(AIFNratiosum/AnoIFNratiosum>=1.2| AIFNratiosum/AnoIFNratiosum<=.8)
+cor(codoncalcs$codrtai, codoncalcs$CAI)
+#R=-0.2060563
+
+```

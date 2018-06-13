@@ -1,0 +1,131 @@
+```{r global_options, include=FALSE}
+library(magrittr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(cowplot)
+library(reshape)
+library(MASS)
+library(scales)
+library(grid)
+library(ggrepel)
+library(BSDA)
+```
+
+
+```{r}
+RTdata <- read.table(file='./RT-PCR.csv', head=TRUE, sep=',', na.strings = '')
+
+
+RTavg <- RTdata %>%
+  group_by(gene, experiment, treatment, virus) %>%
+  summarize(average = mean(ct), stdev = sd(ct), sterror=sd(ct)/sqrt(3))
+
+control <- RTavg %>% filter(gene == 'actin')
+names(control) <- c('actincontrol', 'experiment', 'treatment', 'virus', 'avgcontrol', 'stdevcontrol', 'sterrorcontrol')
+
+influenza <- RTavg %>% 
+  filter(gene != 'actin') %>% 
+  left_join(control, by = c('experiment', 'treatment', 'virus')) %>% 
+  mutate(dCT = average - avgcontrol, 
+         sterrordCT = sqrt(sterror + sterrorcontrol), 
+         stdevdCT = sqrt(stdev + stdevcontrol))
+
+INFddCT <- influenza[c(1:4, 12:14)] %>% filter(treatment == 'ifn')
+names(INFddCT) <- c('gene', 'experiment', 'treatment', 'virus', 'infdct', 'infsterror', 'infstdev')
+noINFddCT <- influenza[c(1:4, 12:14)] %>% filter(treatment != 'ifn')
+names(noINFddCT) <- c('gene', 'experiment', 'treatment', 'virus', 'noinfdct', 'noinfsterror', 'noinfstdev')
+
+ddct <- INFddCT[c(1, 2, 4:7)] %>% 
+  left_join(noINFddCT[c(1, 2, 4:7)], by = c('gene', 'experiment', 'virus')) %>%
+  mutate(ddct = noinfdct - infdct, 
+         ddctsterror = noinfsterror,
+         ddctstdev = noinfstdev) %>% 
+  mutate(foldchange = 2^(-ddct), 
+         min = 2^(-ddct-ddctsterror), 
+         max = 2^(-ddct+ddctsterror))
+
+
+ddct$virus <- factor(ddct$virus, levels = c('wt', 'c1', 'c2'))
+
+library("scales")
+reverselog_trans <- function(base = exp(1)) {
+    trans <- function(x) -log(x, base)
+    inv <- function(x) base^(-x)
+    trans_new(paste0("reverselog-", format(base)), trans, inv, 
+              log_breaks(base = base), 
+              domain = c(1e-100, Inf))
+}
+
+
+
+
+mrnaplot <- ddct %>%
+  filter(gene != 'NA', experiment=='mRNA') %>%
+  ggplot(aes(x=virus, y=foldchange, fill=virus)) +
+  geom_bar(stat="identity", position=position_dodge(), size=.3) +
+  #scale_x_discrete(limits = c('wt', 'c1', 'c2'
+  #                            )) +
+  geom_errorbar(aes(ymin=min, ymax=max, width=.5), color='black', size=.3, position=position_dodge()) +
+  ylab('Fold Inhibition in RNA on IFN Treatment') + 
+  scale_y_continuous(trans=reverselog_trans(10), expand=c(0,0), breaks = c(1,2,3,4,5,6,7,8,9,10,20), labels = c('1','','','','','','','','','10', '')) +
+  scale_x_discrete(position='top') +
+  facet_wrap(~gene, strip.position='bottom') +
+  geom_hline(yintercept=1, size=.5) +
+  theme(legend.position='none',
+        axis.title.y = element_blank(),
+        strip.text.x = element_blank(),
+        strip.text.y = element_blank(),
+        strip.background = element_rect(linetype = 'solid', colour="black", fill="white"),
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(size=12, face='bold'),
+        axis.ticks.x = element_blank(),
+        axis.line.x = element_blank()
+        #panel.border = element_rect(color='black', size=.3, linetype='solid')
+        )
+
+vrnaplot <- ddct %>%
+  filter(gene != 'NA', experiment=='vRNA') %>%
+  ggplot(aes(x=virus, y=foldchange, fill=virus)) +
+  geom_bar(stat="identity", position=position_dodge(), size=.3) +
+  #scale_x_discrete(limits = c('wt', 'c1', 'c2'
+  #                            )) +
+  geom_errorbar(aes(ymin=min, ymax=max, width=.5), color='black', size=.3, position=position_dodge()) +
+  ylab('Fold Inhibition in RNA on IFN Treatment') + 
+  scale_y_continuous(trans=reverselog_trans(10), expand=c(0,0), breaks = c(1,2,3,4,5,6,7,8,9,10,20,30,40,50,60), labels = c('1','','','','','','','','','10','','','','','')) +
+  scale_x_discrete(position='top') +
+  facet_wrap(~gene, strip.position='bottom') +
+  geom_hline(yintercept=1, size=.5) +
+  theme(legend.position='none',
+        axis.title.y = element_blank(),
+        strip.text.x = element_blank(),
+        strip.text.y = element_blank(),
+        strip.background = element_rect(linetype = 'solid', colour="black", fill="white"),
+        axis.title.x = element_blank(),
+        axis.text.x = element_text(size=12, face='bold'),
+        axis.ticks.x = element_blank(),
+        axis.line.x = element_blank()
+        #panel.border = element_rect(color='black', size=.3, linetype='solid')
+        )
+
+data<-ggdraw()+
+  draw_plot(mrnaplot, 0, 0.5, 1, .5)+
+  draw_plot(vrnaplot, 0, 0, 1, .5)
+
+  
+
+#t-test
+WTddct <- ddct[c('gene', 'experiment', 'virus', 'ddct', 'ddctstdev')] %>% filter(virus == 'wt')
+names(WTddct) <-c('gene', 'experiment', 'virus', 'WTddct', 'WTddctstdev')
+  
+  
+  
+ttest<-ddct %>% filter(virus != 'wt') %>%
+  left_join(WTddct[c(1,2,4,5)]) %>% mutate(compare = paste(gene, experiment)) %>%
+  mutate(tsum.test(ddct, s.x=ddctstdev, n.x=3, 
+            mean.y=WTddct, s.y=WTddctstdev, n.y=3,
+            alternative = "greater", mu = 0, var.equal = FALSE, conf.level = 0.95)$p.value)
+
+
+
+```

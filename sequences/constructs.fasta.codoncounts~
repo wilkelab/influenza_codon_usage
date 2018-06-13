@@ -1,0 +1,385 @@
+strain,sero,year,coryear,codon,numcodon,numaa
+Udorn,Udorn,-1,-1,AGT,7,50
+Udorn,Udorn,-1,-1,GCA,16,42
+Udorn,Udorn,-1,-1,CAT,5,10
+Udorn,Udorn,-1,-1,TGT,4,10
+Udorn,Udorn,-1,-1,GCC,11,42
+Udorn,Udorn,-1,-1,CTT,14,57
+Udorn,Udorn,-1,-1,GTG,12,36
+Udorn,Udorn,-1,-1,CTA,13,57
+Udorn,Udorn,-1,-1,GTT,9,36
+Udorn,Udorn,-1,-1,CGG,5,50
+Udorn,Udorn,-1,-1,AAA,18,53
+Udorn,Udorn,-1,-1,AGC,14,50
+Udorn,Udorn,-1,-1,CAG,8,31
+Udorn,Udorn,-1,-1,CGT,1,50
+Udorn,Udorn,-1,-1,GCT,10,42
+Udorn,Udorn,-1,-1,TCT,8,50
+Udorn,Udorn,-1,-1,CCT,8,32
+Udorn,Udorn,-1,-1,CAA,23,31
+Udorn,Udorn,-1,-1,TGA,0,1
+Udorn,Udorn,-1,-1,ATG,37,37
+Udorn,Udorn,-1,-1,TGC,6,10
+Udorn,Udorn,-1,-1,GGG,8,46
+Udorn,Udorn,-1,-1,AAT,27,48
+Udorn,Udorn,-1,-1,ACG,3,60
+Udorn,Udorn,-1,-1,GAA,27,50
+Udorn,Udorn,-1,-1,TAT,15,25
+Udorn,Udorn,-1,-1,GAC,13,32
+Udorn,Udorn,-1,-1,CCA,14,32
+Udorn,Udorn,-1,-1,ACA,37,60
+Udorn,Udorn,-1,-1,AGA,29,50
+Udorn,Udorn,-1,-1,CCC,7,32
+Udorn,Udorn,-1,-1,CCG,3,32
+Udorn,Udorn,-1,-1,CGC,3,50
+Udorn,Udorn,-1,-1,GAT,19,32
+Udorn,Udorn,-1,-1,ATA,15,46
+Udorn,Udorn,-1,-1,TTC,22,33
+Udorn,Udorn,-1,-1,GAG,23,50
+Udorn,Udorn,-1,-1,TCG,3,50
+Udorn,Udorn,-1,-1,ATT,20,46
+Udorn,Udorn,-1,-1,GCG,5,42
+Udorn,Udorn,-1,-1,TTT,11,33
+Udorn,Udorn,-1,-1,GGC,2,46
+Udorn,Udorn,-1,-1,TAG,0,1
+Udorn,Udorn,-1,-1,TCC,6,50
+Udorn,Udorn,-1,-1,GGT,5,46
+Udorn,Udorn,-1,-1,CAC,5,10
+Udorn,Udorn,-1,-1,GTA,5,36
+Udorn,Udorn,-1,-1,GTC,10,36
+Udorn,Udorn,-1,-1,ACT,10,60
+Udorn,Udorn,-1,-1,CTG,11,57
+Udorn,Udorn,-1,-1,TTA,9,57
+Udorn,Udorn,-1,-1,CTC,6,57
+Udorn,Udorn,-1,-1,ACC,10,60
+Udorn,Udorn,-1,-1,AAG,35,53
+Udorn,Udorn,-1,-1,TCA,12,50
+Udorn,Udorn,-1,-1,GGA,31,46
+Udorn,Udorn,-1,-1,TAC,10,25
+Udorn,Udorn,-1,-1,AGG,10,50
+Udorn,Udorn,-1,-1,TTG,4,57
+Udorn,Udorn,-1,-1,AAC,21,48
+Udorn,Udorn,-1,-1,TGG,9,9
+Udorn,Udorn,-1,-1,CGA,2,50
+Udorn,Udorn,-1,-1,ATC,11,46
+Udorn,Udorn,-1,-1,TAA,1,1
+Construct #1,Construct #1,-1,47,AAA,19,53
+Construct #1,Construct #1,-1,47,TGC,6,10
+Construct #1,Construct #1,-1,47,GAT,25,32
+Construct #1,Construct #1,-1,47,GAG,23,50
+Construct #1,Construct #1,-1,47,GGA,30,46
+Construct #1,Construct #1,-1,47,GTA,6,36
+Construct #1,Construct #1,-1,47,TTC,26,33
+Construct #1,Construct #1,-1,47,CTG,4,57
+Construct #1,Construct #1,-1,47,CAG,8,31
+Construct #1,Construct #1,-1,47,AGC,14,50
+Construct #1,Construct #1,-1,47,GTG,13,36
+Construct #1,Construct #1,-1,47,GGC,2,46
+Construct #1,Construct #1,-1,47,AGG,9,50
+Construct #1,Construct #1,-1,47,AGT,9,50
+Construct #1,Construct #1,-1,47,TAG,0,1
+Construct #1,Construct #1,-1,47,ATC,10,46
+Construct #1,Construct #1,-1,47,TGG,9,9
+Construct #1,Construct #1,-1,47,GTT,8,36
+Construct #1,Construct #1,-1,47,GCC,8,42
+Construct #1,Construct #1,-1,47,GAA,27,50
+Construct #1,Construct #1,-1,47,ACG,4,60
+Construct #1,Construct #1,-1,47,TCG,3,50
+Construct #1,Construct #1,-1,47,CCT,9,32
+Construct #1,Construct #1,-1,47,TGA,0,1
+Construct #1,Construct #1,-1,47,ATG,37,37
+Construct #1,Construct #1,-1,47,AAC,25,48
+Construct #1,Construct #1,-1,47,TAA,1,1
+Construct #1,Construct #1,-1,47,TAC,9,25
+Construct #1,Construct #1,-1,47,CCG,4,32
+Construct #1,Construct #1,-1,47,ACA,37,60
+Construct #1,Construct #1,-1,47,TCC,5,50
+Construct #1,Construct #1,-1,47,GCT,8,42
+Construct #1,Construct #1,-1,47,CAC,4,10
+Construct #1,Construct #1,-1,47,CCA,12,32
+Construct #1,Construct #1,-1,47,CAA,23,31
+Construct #1,Construct #1,-1,47,TTG,6,57
+Construct #1,Construct #1,-1,47,GCA,18,42
+Construct #1,Construct #1,-1,47,CCC,7,32
+Construct #1,Construct #1,-1,47,ATT,20,46
+Construct #1,Construct #1,-1,47,GAC,7,32
+Construct #1,Construct #1,-1,47,TAT,16,25
+Construct #1,Construct #1,-1,47,GCG,8,42
+Construct #1,Construct #1,-1,47,CGC,3,50
+Construct #1,Construct #1,-1,47,GTC,9,36
+Construct #1,Construct #1,-1,47,ACT,9,60
+Construct #1,Construct #1,-1,47,ATA,16,46
+Construct #1,Construct #1,-1,47,CGT,0,50
+Construct #1,Construct #1,-1,47,TGT,4,10
+Construct #1,Construct #1,-1,47,TTT,7,33
+Construct #1,Construct #1,-1,47,GGT,5,46
+Construct #1,Construct #1,-1,47,ACC,10,60
+Construct #1,Construct #1,-1,47,GGG,9,46
+Construct #1,Construct #1,-1,47,AAG,34,53
+Construct #1,Construct #1,-1,47,CGG,9,50
+Construct #1,Construct #1,-1,47,CTC,8,57
+Construct #1,Construct #1,-1,47,TTA,10,57
+Construct #1,Construct #1,-1,47,CTT,13,57
+Construct #1,Construct #1,-1,47,TCT,6,50
+Construct #1,Construct #1,-1,47,CAT,6,10
+Construct #1,Construct #1,-1,47,CTA,16,57
+Construct #1,Construct #1,-1,47,AGA,27,50
+Construct #1,Construct #1,-1,47,CGA,2,50
+Construct #1,Construct #1,-1,47,TCA,13,50
+Construct #1,Construct #1,-1,47,AAT,23,48
+Construct #2,Construct #2,-1,-1,AGT,6,50
+Construct #2,Construct #2,-1,-1,GCA,19,42
+Construct #2,Construct #2,-1,-1,CAT,5,10
+Construct #2,Construct #2,-1,-1,TGT,4,10
+Construct #2,Construct #2,-1,-1,GCC,11,42
+Construct #2,Construct #2,-1,-1,CTT,13,56
+Construct #2,Construct #2,-1,-1,GTG,13,34
+Construct #2,Construct #2,-1,-1,CTA,11,56
+Construct #2,Construct #2,-1,-1,GTT,7,34
+Construct #2,Construct #2,-1,-1,CGG,5,51
+Construct #2,Construct #2,-1,-1,AAA,26,53
+Construct #2,Construct #2,-1,-1,AGC,14,50
+Construct #2,Construct #2,-1,-1,CAG,5,31
+Construct #2,Construct #2,-1,-1,CGT,0,51
+Construct #2,Construct #2,-1,-1,GCT,10,42
+Construct #2,Construct #2,-1,-1,TCT,9,50
+Construct #2,Construct #2,-1,-1,CCT,11,32
+Construct #2,Construct #2,-1,-1,CAA,26,31
+Construct #2,Construct #2,-1,-1,TGA,0,1
+Construct #2,Construct #2,-1,-1,ATG,37,37
+Construct #2,Construct #2,-1,-1,TGC,6,10
+Construct #2,Construct #2,-1,-1,GGG,12,47
+Construct #2,Construct #2,-1,-1,AAT,26,49
+Construct #2,Construct #2,-1,-1,ACG,4,60
+Construct #2,Construct #2,-1,-1,GAA,23,48
+Construct #2,Construct #2,-1,-1,TAT,12,25
+Construct #2,Construct #2,-1,-1,GAC,12,32
+Construct #2,Construct #2,-1,-1,CCA,12,32
+Construct #2,Construct #2,-1,-1,ACA,36,60
+Construct #2,Construct #2,-1,-1,AGA,24,51
+Construct #2,Construct #2,-1,-1,CCC,6,32
+Construct #2,Construct #2,-1,-1,CCG,3,32
+Construct #2,Construct #2,-1,-1,CGC,2,51
+Construct #2,Construct #2,-1,-1,GAT,20,32
+Construct #2,Construct #2,-1,-1,ATA,18,48
+Construct #2,Construct #2,-1,-1,TTC,20,33
+Construct #2,Construct #2,-1,-1,GAG,25,48
+Construct #2,Construct #2,-1,-1,TCG,2,50
+Construct #2,Construct #2,-1,-1,ATT,19,48
+Construct #2,Construct #2,-1,-1,GCG,2,42
+Construct #2,Construct #2,-1,-1,TTT,13,33
+Construct #2,Construct #2,-1,-1,GGC,3,47
+Construct #2,Construct #2,-1,-1,TAG,0,1
+Construct #2,Construct #2,-1,-1,TCC,6,50
+Construct #2,Construct #2,-1,-1,GGT,5,47
+Construct #2,Construct #2,-1,-1,CAC,5,10
+Construct #2,Construct #2,-1,-1,GTA,6,34
+Construct #2,Construct #2,-1,-1,GTC,8,34
+Construct #2,Construct #2,-1,-1,ACT,10,60
+Construct #2,Construct #2,-1,-1,CTG,12,56
+Construct #2,Construct #2,-1,-1,TTA,8,56
+Construct #2,Construct #2,-1,-1,CTC,5,56
+Construct #2,Construct #2,-1,-1,ACC,10,60
+Construct #2,Construct #2,-1,-1,AAG,27,53
+Construct #2,Construct #2,-1,-1,TCA,13,50
+Construct #2,Construct #2,-1,-1,GGA,27,47
+Construct #2,Construct #2,-1,-1,TAC,13,25
+Construct #2,Construct #2,-1,-1,AGG,18,51
+Construct #2,Construct #2,-1,-1,TTG,7,56
+Construct #2,Construct #2,-1,-1,AAC,23,49
+Construct #2,Construct #2,-1,-1,TGG,9,9
+Construct #2,Construct #2,-1,-1,CGA,2,51
+Construct #2,Construct #2,-1,-1,ATC,11,48
+Construct #2,Construct #2,-1,-1,TAA,1,1
+All Significant,All Significant,-1,-1,AGT,7,50
+All Significant,All Significant,-1,-1,GCA,16,42
+All Significant,All Significant,-1,-1,CAT,4,10
+All Significant,All Significant,-1,-1,TGT,4,10
+All Significant,All Significant,-1,-1,GCC,11,42
+All Significant,All Significant,-1,-1,CTT,38,57
+All Significant,All Significant,-1,-1,GTG,12,36
+All Significant,All Significant,-1,-1,CTA,1,57
+All Significant,All Significant,-1,-1,GTT,9,36
+All Significant,All Significant,-1,-1,CGG,5,50
+All Significant,All Significant,-1,-1,AAA,18,53
+All Significant,All Significant,-1,-1,AGC,14,50
+All Significant,All Significant,-1,-1,CAG,8,31
+All Significant,All Significant,-1,-1,CGT,1,50
+All Significant,All Significant,-1,-1,GCT,10,42
+All Significant,All Significant,-1,-1,TCT,8,50
+All Significant,All Significant,-1,-1,CCT,8,32
+All Significant,All Significant,-1,-1,CAA,23,31
+All Significant,All Significant,-1,-1,TGA,0,1
+All Significant,All Significant,-1,-1,ATG,37,37
+All Significant,All Significant,-1,-1,TGC,6,10
+All Significant,All Significant,-1,-1,GGG,8,46
+All Significant,All Significant,-1,-1,AAT,27,48
+All Significant,All Significant,-1,-1,ACG,3,60
+All Significant,All Significant,-1,-1,GAA,10,50
+All Significant,All Significant,-1,-1,TAT,15,25
+All Significant,All Significant,-1,-1,GAC,13,32
+All Significant,All Significant,-1,-1,CCA,14,32
+All Significant,All Significant,-1,-1,ACA,37,60
+All Significant,All Significant,-1,-1,AGA,29,50
+All Significant,All Significant,-1,-1,CCC,7,32
+All Significant,All Significant,-1,-1,CCG,3,32
+All Significant,All Significant,-1,-1,CGC,3,50
+All Significant,All Significant,-1,-1,GAT,19,32
+All Significant,All Significant,-1,-1,ATA,15,46
+All Significant,All Significant,-1,-1,TTC,22,33
+All Significant,All Significant,-1,-1,GAG,40,50
+All Significant,All Significant,-1,-1,TCG,3,50
+All Significant,All Significant,-1,-1,ATT,20,46
+All Significant,All Significant,-1,-1,GCG,5,42
+All Significant,All Significant,-1,-1,TTT,11,33
+All Significant,All Significant,-1,-1,GGC,2,46
+All Significant,All Significant,-1,-1,TAG,0,1
+All Significant,All Significant,-1,-1,TCC,6,50
+All Significant,All Significant,-1,-1,GGT,5,46
+All Significant,All Significant,-1,-1,CAC,6,10
+All Significant,All Significant,-1,-1,GTA,5,36
+All Significant,All Significant,-1,-1,GTC,10,36
+All Significant,All Significant,-1,-1,ACT,10,60
+All Significant,All Significant,-1,-1,CTG,2,57
+All Significant,All Significant,-1,-1,TTA,1,57
+All Significant,All Significant,-1,-1,CTC,14,57
+All Significant,All Significant,-1,-1,ACC,10,60
+All Significant,All Significant,-1,-1,AAG,35,53
+All Significant,All Significant,-1,-1,TCA,12,50
+All Significant,All Significant,-1,-1,GGA,31,46
+All Significant,All Significant,-1,-1,TAC,10,25
+All Significant,All Significant,-1,-1,AGG,10,50
+All Significant,All Significant,-1,-1,TTG,1,57
+All Significant,All Significant,-1,-1,AAC,21,48
+All Significant,All Significant,-1,-1,TGG,9,9
+All Significant,All Significant,-1,-1,CGA,2,50
+All Significant,All Significant,-1,-1,ATC,11,46
+All Significant,All Significant,-1,-1,TAA,1,1
+rtAI construct #1,rtAI construct #1,-1,-1,AGT,7,50
+rtAI construct #1,rtAI construct #1,-1,-1,GCA,16,42
+rtAI construct #1,rtAI construct #1,-1,-1,CAT,4,10
+rtAI construct #1,rtAI construct #1,-1,-1,TGT,4,10
+rtAI construct #1,rtAI construct #1,-1,-1,GCC,11,42
+rtAI construct #1,rtAI construct #1,-1,-1,CTT,16,57
+rtAI construct #1,rtAI construct #1,-1,-1,GTG,12,36
+rtAI construct #1,rtAI construct #1,-1,-1,CTA,13,57
+rtAI construct #1,rtAI construct #1,-1,-1,GTT,9,36
+rtAI construct #1,rtAI construct #1,-1,-1,CGG,5,50
+rtAI construct #1,rtAI construct #1,-1,-1,AAA,18,53
+rtAI construct #1,rtAI construct #1,-1,-1,AGC,14,50
+rtAI construct #1,rtAI construct #1,-1,-1,CAG,8,31
+rtAI construct #1,rtAI construct #1,-1,-1,CGT,1,50
+rtAI construct #1,rtAI construct #1,-1,-1,GCT,10,42
+rtAI construct #1,rtAI construct #1,-1,-1,TCT,8,50
+rtAI construct #1,rtAI construct #1,-1,-1,CCT,8,32
+rtAI construct #1,rtAI construct #1,-1,-1,CAA,23,31
+rtAI construct #1,rtAI construct #1,-1,-1,TGA,0,1
+rtAI construct #1,rtAI construct #1,-1,-1,ATG,37,37
+rtAI construct #1,rtAI construct #1,-1,-1,TGC,6,10
+rtAI construct #1,rtAI construct #1,-1,-1,GGG,8,46
+rtAI construct #1,rtAI construct #1,-1,-1,AAT,27,48
+rtAI construct #1,rtAI construct #1,-1,-1,ACG,3,60
+rtAI construct #1,rtAI construct #1,-1,-1,GAA,18,50
+rtAI construct #1,rtAI construct #1,-1,-1,TAT,15,25
+rtAI construct #1,rtAI construct #1,-1,-1,GAC,13,32
+rtAI construct #1,rtAI construct #1,-1,-1,CCA,14,32
+rtAI construct #1,rtAI construct #1,-1,-1,ACA,37,60
+rtAI construct #1,rtAI construct #1,-1,-1,AGA,29,50
+rtAI construct #1,rtAI construct #1,-1,-1,CCC,7,32
+rtAI construct #1,rtAI construct #1,-1,-1,CCG,3,32
+rtAI construct #1,rtAI construct #1,-1,-1,CGC,3,50
+rtAI construct #1,rtAI construct #1,-1,-1,GAT,19,32
+rtAI construct #1,rtAI construct #1,-1,-1,ATA,15,46
+rtAI construct #1,rtAI construct #1,-1,-1,TTC,22,33
+rtAI construct #1,rtAI construct #1,-1,-1,GAG,32,50
+rtAI construct #1,rtAI construct #1,-1,-1,TCG,3,50
+rtAI construct #1,rtAI construct #1,-1,-1,ATT,20,46
+rtAI construct #1,rtAI construct #1,-1,-1,GCG,5,42
+rtAI construct #1,rtAI construct #1,-1,-1,TTT,11,33
+rtAI construct #1,rtAI construct #1,-1,-1,GGC,2,46
+rtAI construct #1,rtAI construct #1,-1,-1,TAG,0,1
+rtAI construct #1,rtAI construct #1,-1,-1,TCC,6,50
+rtAI construct #1,rtAI construct #1,-1,-1,GGT,5,46
+rtAI construct #1,rtAI construct #1,-1,-1,CAC,6,10
+rtAI construct #1,rtAI construct #1,-1,-1,GTA,5,36
+rtAI construct #1,rtAI construct #1,-1,-1,GTC,10,36
+rtAI construct #1,rtAI construct #1,-1,-1,ACT,10,60
+rtAI construct #1,rtAI construct #1,-1,-1,CTG,3,57
+rtAI construct #1,rtAI construct #1,-1,-1,TTA,7,57
+rtAI construct #1,rtAI construct #1,-1,-1,CTC,14,57
+rtAI construct #1,rtAI construct #1,-1,-1,ACC,10,60
+rtAI construct #1,rtAI construct #1,-1,-1,AAG,35,53
+rtAI construct #1,rtAI construct #1,-1,-1,TCA,12,50
+rtAI construct #1,rtAI construct #1,-1,-1,GGA,31,46
+rtAI construct #1,rtAI construct #1,-1,-1,TAC,10,25
+rtAI construct #1,rtAI construct #1,-1,-1,AGG,10,50
+rtAI construct #1,rtAI construct #1,-1,-1,TTG,4,57
+rtAI construct #1,rtAI construct #1,-1,-1,AAC,21,48
+rtAI construct #1,rtAI construct #1,-1,-1,TGG,9,9
+rtAI construct #1,rtAI construct #1,-1,-1,CGA,2,50
+rtAI construct #1,rtAI construct #1,-1,-1,ATC,11,46
+rtAI construct #1,rtAI construct #1,-1,-1,TAA,1,1
+rtAI construct #2,rtAI construct #3,-1,-1,AGT,7,50
+rtAI construct #2,rtAI construct #3,-1,-1,GCA,16,42
+rtAI construct #2,rtAI construct #3,-1,-1,CAT,4,10
+rtAI construct #2,rtAI construct #3,-1,-1,TGT,4,10
+rtAI construct #2,rtAI construct #3,-1,-1,GCC,11,42
+rtAI construct #2,rtAI construct #3,-1,-1,CTT,19,57
+rtAI construct #2,rtAI construct #3,-1,-1,GTG,12,36
+rtAI construct #2,rtAI construct #3,-1,-1,CTA,13,57
+rtAI construct #2,rtAI construct #3,-1,-1,GTT,9,36
+rtAI construct #2,rtAI construct #3,-1,-1,CGG,5,50
+rtAI construct #2,rtAI construct #3,-1,-1,AAA,18,53
+rtAI construct #2,rtAI construct #3,-1,-1,AGC,14,50
+rtAI construct #2,rtAI construct #3,-1,-1,CAG,8,31
+rtAI construct #2,rtAI construct #3,-1,-1,CGT,1,50
+rtAI construct #2,rtAI construct #3,-1,-1,GCT,10,42
+rtAI construct #2,rtAI construct #3,-1,-1,TCT,8,50
+rtAI construct #2,rtAI construct #3,-1,-1,CCT,8,32
+rtAI construct #2,rtAI construct #3,-1,-1,CAA,23,31
+rtAI construct #2,rtAI construct #3,-1,-1,TGA,0,1
+rtAI construct #2,rtAI construct #3,-1,-1,ATG,37,37
+rtAI construct #2,rtAI construct #3,-1,-1,TGC,6,10
+rtAI construct #2,rtAI construct #3,-1,-1,GGG,8,46
+rtAI construct #2,rtAI construct #3,-1,-1,AAT,27,48
+rtAI construct #2,rtAI construct #3,-1,-1,ACG,3,60
+rtAI construct #2,rtAI construct #3,-1,-1,GAA,18,50
+rtAI construct #2,rtAI construct #3,-1,-1,TAT,15,25
+rtAI construct #2,rtAI construct #3,-1,-1,GAC,13,32
+rtAI construct #2,rtAI construct #3,-1,-1,CCA,14,32
+rtAI construct #2,rtAI construct #3,-1,-1,ACA,37,60
+rtAI construct #2,rtAI construct #3,-1,-1,AGA,29,50
+rtAI construct #2,rtAI construct #3,-1,-1,CCC,7,32
+rtAI construct #2,rtAI construct #3,-1,-1,CCG,3,32
+rtAI construct #2,rtAI construct #3,-1,-1,CGC,3,50
+rtAI construct #2,rtAI construct #3,-1,-1,GAT,19,32
+rtAI construct #2,rtAI construct #3,-1,-1,ATA,15,46
+rtAI construct #2,rtAI construct #3,-1,-1,TTC,22,33
+rtAI construct #2,rtAI construct #3,-1,-1,GAG,32,50
+rtAI construct #2,rtAI construct #3,-1,-1,TCG,3,50
+rtAI construct #2,rtAI construct #3,-1,-1,ATT,20,46
+rtAI construct #2,rtAI construct #3,-1,-1,GCG,5,42
+rtAI construct #2,rtAI construct #3,-1,-1,TTT,11,33
+rtAI construct #2,rtAI construct #3,-1,-1,GGC,2,46
+rtAI construct #2,rtAI construct #3,-1,-1,TAG,0,1
+rtAI construct #2,rtAI construct #3,-1,-1,TCC,6,50
+rtAI construct #2,rtAI construct #3,-1,-1,GGT,5,46
+rtAI construct #2,rtAI construct #3,-1,-1,CAC,6,10
+rtAI construct #2,rtAI construct #3,-1,-1,GTA,5,36
+rtAI construct #2,rtAI construct #3,-1,-1,GTC,10,36
+rtAI construct #2,rtAI construct #3,-1,-1,ACT,10,60
+rtAI construct #2,rtAI construct #3,-1,-1,CTG,5,57
+rtAI construct #2,rtAI construct #3,-1,-1,TTA,4,57
+rtAI construct #2,rtAI construct #3,-1,-1,CTC,12,57
+rtAI construct #2,rtAI construct #3,-1,-1,ACC,10,60
+rtAI construct #2,rtAI construct #3,-1,-1,AAG,35,53
+rtAI construct #2,rtAI construct #3,-1,-1,TCA,12,50
+rtAI construct #2,rtAI construct #3,-1,-1,GGA,31,46
+rtAI construct #2,rtAI construct #3,-1,-1,TAC,10,25
+rtAI construct #2,rtAI construct #3,-1,-1,AGG,10,50
+rtAI construct #2,rtAI construct #3,-1,-1,TTG,4,57
+rtAI construct #2,rtAI construct #3,-1,-1,AAC,21,48
+rtAI construct #2,rtAI construct #3,-1,-1,TGG,9,9
+rtAI construct #2,rtAI construct #3,-1,-1,CGA,2,50
+rtAI construct #2,rtAI construct #3,-1,-1,ATC,11,46
+rtAI construct #2,rtAI construct #3,-1,-1,TAA,1,1

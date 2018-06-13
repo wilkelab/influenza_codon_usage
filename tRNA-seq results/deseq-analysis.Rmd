@@ -1,0 +1,162 @@
+```{r}
+library(magrittr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(cowplot)
+library(reshape)
+library(DESeq2)
+```
+
+
+```{r}
+data <- read.csv('anticodoncounts.csv', header=TRUE, sep=',')
+coldata <- read.csv(file='headerinfo.csv', head=TRUE, sep=',')
+data[8] <- NULL
+	
+matrix.please<-function(x) {
+    m<-as.matrix(x[,-1])
+    rownames(m)<-x[,1]
+    m
+}
+
+data <- matrix.please(data)
+is.numeric(data)
+
+dds <- DESeqDataSetFromMatrix(countData = data,
+                              colData = coldata,
+                              design = ~ treatment)
+
+
+dds <- DESeq(dds)
+counts(dds, normalized=TRUE)
+
+
+res<-results(dds)
+res[order(res$pvalue),]
+```
+
+
+```{r}
+data <- read.csv('caluanticodoncounts.csv', header=TRUE, sep=',')
+coldata <- read.csv(file='caluheaderinfo.csv', head=TRUE, sep=',')
+data[8] <- NULL
+	
+matrix.please<-function(x) {
+    m<-as.matrix(x[,-1])
+    rownames(m)<-x[,1]
+    m
+}
+
+data <- matrix.please(data)
+is.numeric(data)
+
+dds <- DESeqDataSetFromMatrix(countData = data,
+                              colData = coldata,
+                              design = ~ treatment)
+
+
+dds <- DESeq(dds)
+
+
+res<-results(dds)
+resOrderedDF<-res[order(res$padj),]
+write.csv(resOrderedDF, file = "results.csv")
+```
+
+```{r}
+anticodons <- read.csv(file='anticodoncounts.csv', head=TRUE, sep=',')
+
+anticodons %>%
+  group_by(aa) %>%
+  summarize(AnoIFNLib1aa=sum(AnoIFNLib1), AnoIFNLib2aa=sum(AnoIFNLib2), AnoIFNLib3aa=sum(AnoIFNLib3),AIFNLib1aa=sum(AIFNLib1), AIFNLib2aa=sum(AIFNLib2), AIFNLib3aa=sum(AIFNLib3)) -> aacorrection
+
+anticodons %>% left_join(aacorrection) -> anticodons
+
+anticodons %>% mutate(AnoIFNratiolib1=AnoIFNLib1/AnoIFNLib1aa, AnoIFNratiolib2=AnoIFNLib2/AnoIFNLib2aa, AnoIFNratiolib3=AnoIFNLib3/AnoIFNLib3aa, AIFNratiolib1=AIFNLib1/AIFNLib1aa, AIFNratiolib2=AIFNLib2/AIFNLib2aa, AIFNratiolib3=AIFNLib3/AIFNLib3aa) ->anticodons
+
+anticodons %>%
+  group_by(X) %>% 
+  mutate(ratio=mean((c(AIFNratiolib1, AIFNratiolib2, AIFNratiolib3)))/mean((c(AnoIFNratiolib1, AnoIFNratiolib2, AnoIFNratiolib3)))) %>%
+  mutate(sd=sqrt((sd((c(AIFNratiolib1, AIFNratiolib2, AIFNratiolib3)))/mean(ratio))^2+(sd((c(AnoIFNratiolib1, AnoIFNratiolib2, AnoIFNratiolib3)))/mean(ratio))^2)) ->anticodonsother
+
+
+anticodonsother <- anticodonsother %>%
+  mutate(AIFNmeanratio = mean(c(AIFNLib1/sum(anticodonsother$AIFNLib1), AIFNLib2/sum(anticodonsother$AIFNLib2))), 
+         AnoIFNmeanratio = mean(c(AnoIFNLib1/sum(anticodonsother$AnoIFNLib1), AnoIFNLib2/sum(anticodonsother$AnoIFNLib2), AnoIFNLib3/sum(anticodonsother$AnoIFNLib3))),
+         AIFNsdratio = sd(c(AIFNLib1/sum(anticodonsother$AIFNLib1), AIFNLib2/sum(anticodonsother$AIFNLib2)))/sqrt(3), 
+         AnoIFNsdratio = sd(c(AnoIFNLib1/sum(anticodonsother$AnoIFNLib1), AnoIFNLib2/sum(anticodonsother$AnoIFNLib2), AnoIFNLib3/sum(anticodonsother$AnoIFNLib3)))/sqrt(3))
+
+significant <- anticodonsother %>% filter(X == 'CAA' | X == 'TAG' | X == 'AAG' | X == 'CAG' | X == 'GTC' | X == 'CTC')
+
+
+anticodonsother %>% filter(X != 'CAA', X != 'TAG', X != 'AAG', X != 'CAG', X != 'GTC', X != 'CTC') %>%
+  ggplot(aes(y=AIFNmeanratio, x=AnoIFNmeanratio, label=X)) + 
+  geom_abline(alpha = 0.5) +
+  geom_errorbar(aes(ymax=AIFNmeanratio + AIFNsdratio, ymin=AIFNmeanratio - AIFNsdratio), alpha = .5, width=.05) +
+  geom_errorbar(data = significant, aes(ymax=AIFNmeanratio + AIFNsdratio, ymin=AIFNmeanratio - AIFNsdratio), alpha=1, width=.05, color='red') +
+  geom_errorbarh(aes(xmax=AnoIFNmeanratio + AnoIFNsdratio, xmin=AnoIFNmeanratio - AnoIFNsdratio), alpha = .5, height=.05) +
+  geom_errorbarh(data = significant, aes(xmax=AnoIFNmeanratio + AnoIFNsdratio, xmin=AnoIFNmeanratio - AnoIFNsdratio), alpha=1, height=.05, color='red') +
+  geom_point(size = 0.5) +
+  geom_point(data = significant, color = 'red') +
+  geom_text(data = significant, aes(label = paste(X, ':', aa)), color = 'red', hjust = 0, vjust = 1.5) +
+  scale_x_log10(limits = c(.0001, .15), name = 'tRNA expression in untreated cells', breaks = c(.0001, .001, .01, .1)) +
+  scale_y_log10(limits = c(.0001, .15), name = 'tRNA expression in IFN-treated cells', breaks = c(.0001, .001, .01, .1)) +
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size=10, face="bold"),
+        legend.text=element_text(size=12),
+        legend.title=element_text(size=12,face="bold"))
+
+#okay, line plot thingy
+
+```
+
+calu time
+```{r}
+anticodons <- read.csv(file='caluanticodoncounts.csv', head=TRUE, sep=',')
+
+anticodons %>%
+  group_by(aa) %>%
+  summarize(calunLib1aa=sum(calunLib1), calunLib2aa=sum(calunLib2), calunLib3aa=sum(calunLib3),caluyLib1aa=sum(caluyLib1), caluyLib2aa=sum(caluyLib2), caluyLib3aa=sum(caluyLib3)) -> aacorrection
+
+anticodons %>% left_join(aacorrection) -> anticodons
+
+anticodons %>% mutate(calunratiolib1=calunLib1/calunLib1aa, calunratiolib2=calunLib2/calunLib2aa, calunratiolib3=calunLib3/calunLib3aa, caluyratiolib1=caluyLib1/caluyLib1aa, caluyratiolib2=caluyLib2/caluyLib2aa, caluyratiolib3=caluyLib3/caluyLib3aa) ->anticodons
+
+anticodons %>%
+  group_by(X) %>% 
+  mutate(ratio=mean((c(caluyratiolib1, caluyratiolib2, caluyratiolib3)))/mean((c(calunratiolib1, calunratiolib2, calunratiolib3)))) %>%
+  mutate(sd=sqrt((sd((c(caluyratiolib1, caluyratiolib2, caluyratiolib3)))/mean(ratio))^2+(sd((c(calunratiolib1, calunratiolib2, calunratiolib3)))/mean(ratio))^2)) ->anticodonsother
+
+
+anticodonsother <- anticodonsother %>%
+  mutate(caluymeanratio = mean(c(caluyLib1/sum(anticodonsother$caluyLib1), caluyLib2/sum(anticodonsother$caluyLib2))), 
+         calunmeanratio = mean(c(calunLib1/sum(anticodonsother$calunLib1), calunLib2/sum(anticodonsother$calunLib2), calunLib3/sum(anticodonsother$calunLib3))),
+         caluysdratio = sd(c(caluyLib1/sum(anticodonsother$caluyLib1), caluyLib2/sum(anticodonsother$caluyLib2)))/sqrt(3), 
+         calunsdratio = sd(c(calunLib1/sum(anticodonsother$calunLib1), calunLib2/sum(anticodonsother$calunLib2), calunLib3/sum(anticodonsother$calunLib3)))/sqrt(3))
+
+significant <- anticodonsother %>% filter(X == 'TAG' | X == 'AAG' | X == 'CTC' | X == 'CTG' | X == 'GCT')
+
+
+anticodonsother %>% filter(X != 'CTG', X != 'TAG', X != 'AAG', X != 'GTC', X != 'CTC') %>%
+  ggplot(aes(y=caluymeanratio, x=calunmeanratio, label=X)) + 
+  geom_abline(alpha = 0.5) +
+  geom_errorbar(aes(ymax=caluymeanratio + caluysdratio, ymin=caluymeanratio - caluysdratio), width=.05, alpha=.5) +
+  geom_errorbar(data = significant, aes(ymax=caluymeanratio + caluysdratio, ymin=caluymeanratio - caluysdratio), alpha=1, width=.05, color='red') +
+  geom_errorbarh(aes(xmax=calunmeanratio + calunsdratio, xmin=calunmeanratio - calunsdratio), height=.05, alpha=.5) +
+  geom_errorbarh(data = significant, aes(xmax=calunmeanratio + calunsdratio, xmin=calunmeanratio - calunsdratio), alpha=1, height=.05, color='red') +
+  geom_point(size = 0.5) +
+  geom_point(data = significant, color = 'red') +
+  geom_text(data = significant, aes(label = paste(X, ':', aa)), color = 'red', hjust = 1, vjust = 1.5) +
+  scale_x_log10(limits = c(.0001, .2), name = 'tRNA expression in untreated cells', breaks = c(.0001, .001, .01, .1)) +
+  scale_y_log10(limits = c(.0001, .2), name = 'tRNA expression in IFN-treated cells', breaks = c(.0001, .001, .01, .1)) +
+  theme(axis.text=element_text(size=12), 
+        axis.title=element_text(size=14,face="bold"), 
+        plot.title=element_text(size=10, face="bold"),
+        legend.text=element_text(size=12),
+        legend.title=element_text(size=12,face="bold"))
+
+#okay, line plot thingy
+
+```

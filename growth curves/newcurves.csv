@@ -1,0 +1,9 @@
+Time(hours),group,Cell-type,treatment,strain,titer(pfu/mL),sd
+24,4,Calu3,untreated,ud,12300000,2500000
+24,4,Calu3,untreated,con3,125000,27000
+24,4,Calu3,untreated,con4,137000,28000
+24,4,Calu3,untreated,con5,115000,7700
+24,4,Calu3,IFN treated,ud,1230000,150000
+24,4,Calu3,IFN treated,con3,41600,9300
+24,4,Calu3,IFN treated,con4,57000,4000
+24,4,Calu3,IFN treated,con5,36300,13000
